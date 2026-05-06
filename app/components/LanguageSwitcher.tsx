@@ -1,23 +1,25 @@
 "use client"
-
 import Link from "next/link"
-import { useSearchParams, usePathname } from "next/navigation"
-
+import { useState, useEffect } from "react"
 export default function LanguageSwitcher() {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const lang = searchParams.get("lang") || "en"
-
-  const getLangUrl = (targetLang: string) => {
-    const params = new URLSearchParams(searchParams.toString())
+  const [lang, setLang] = useState("en")
+  useEffect(() => {
+    // Get language from URL after component mounts
+    const params = new URLSearchParams(window.location.search)
+    const langParam = params.get("lang")
+    if (langParam === "zh" || langParam === "en") {
+      setLang(langParam)
+    }
+  }, [])
+  const getUrl = (targetLang: string) => {
+    const params = new URLSearchParams(window.location.search)
     params.set("lang", targetLang)
-    return `${pathname}?${params.toString()}`
+    return "?" + params.toString()
   }
-
   return (
     <div className="fixed top-4 right-4 z-50 flex gap-2">
       <Link 
-        href={getLangUrl("en")}
+        href={getUrl("en")}
         className={`px-3 py-1 rounded-full text-sm font-medium ${
           lang === "en" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
         }`}
@@ -25,7 +27,7 @@ export default function LanguageSwitcher() {
         EN
       </Link>
       <Link 
-        href={getLangUrl("zh")}
+        href={getUrl("zh")}
         className={`px-3 py-1 rounded-full text-sm font-medium ${
           lang === "zh" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
         }`}
