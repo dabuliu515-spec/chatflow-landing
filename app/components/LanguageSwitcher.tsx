@@ -3,7 +3,9 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 export default function LanguageSwitcher() {
   const [lang, setLang] = useState("en")
+  const [mounted, setMounted] = useState(false)
   useEffect(() => {
+    setMounted(true)
     const params = new URLSearchParams(window.location.search)
     const langParam = params.get("lang")
     if (langParam === "zh" || langParam === "en") {
@@ -11,9 +13,18 @@ export default function LanguageSwitcher() {
     }
   }, [])
   const getUrl = (targetLang: string) => {
+    if (typeof window === "undefined") return "/"
     const params = new URLSearchParams(window.location.search)
     params.set("lang", targetLang)
     return "?" + params.toString()
+  }
+  if (!mounted) {
+    return (
+      <div className="fixed top-4 right-4 z-50 flex gap-2">
+        <div className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">EN</div>
+        <div className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">中文</div>
+      </div>
+    )
   }
   return (
     <div className="fixed top-4 right-4 z-50 flex gap-2">
