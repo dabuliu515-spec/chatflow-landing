@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 export default function LanguageSwitcher() {
   const [lang, setLang] = useState("en")
   useEffect(() => {
-    // Get language from URL after component mounts
     const params = new URLSearchParams(window.location.search)
     const langParam = params.get("lang")
     if (langParam === "zh" || langParam === "en") {
