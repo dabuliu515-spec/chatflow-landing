@@ -20,6 +20,10 @@ export const metadata: Metadata = {
   description: "Automate customer responses without losing the human touch.",
 }
 
+function LoadingSwitcher() {
+  return <div style={{ position: "fixed", top: 16, right: 16, zIndex: 50 }} />
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
         <LanguageProvider>
-          <Suspense fallback={null}>
+          <Suspense fallback={<LoadingSwitcher />}>
             <LanguageSwitcher />
           </Suspense>
           {children}

@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 
 type Language = "en" | "zh"
@@ -13,15 +13,27 @@ const LanguageContext = createContext<LanguageContextType>({
   lang: "en",
 })
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
+function LanguageReader({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams()
-  const langParam = searchParams.get("lang")
-  const lang: Language = (langParam === "zh" || langParam === "en") ? langParam : "en"
+  const [lang, setLang] = useState<Language>("en")
+
+  useEffect(() => {
+    const langParam = searchParams.get("lang")
+    if (langParam === "zh" || langParam === "en") {
+      setLang(langParam)
+    }
+  }, [searchParams])
 
   return (
     <LanguageContext.Provider value={{ lang }}>
       {children}
     </LanguageContext.Provider>
+  )
+}
+
+export function LanguageProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <LanguageReader>{children}</LanguageReader>
   )
 }
 
