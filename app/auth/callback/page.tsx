@@ -10,7 +10,6 @@ export default function Callback() {
 
   useEffect(() => {
     const handleAuthCallback = async () => {
-      // Get code from URL
       const code = searchParams.get("code")
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code)
@@ -19,7 +18,6 @@ export default function Callback() {
           return
         }
       }
-      // Fallback: go to home
       router.push("/")
     }
     handleAuthCallback()
