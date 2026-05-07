@@ -13,13 +13,16 @@ export default function LanguageSwitcher() {
   const switchLang = (newLang: "en" | "zh") => {
     setLang(newLang)
     localStorage.setItem("lang", newLang)
+    window.location.reload()
   }
 
   if (!mounted) {
-    return <div className="fixed top-4 right-4 z-50 flex gap-2">
-      <div className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">EN</div>
-      <div className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">Chinese</div>
-    </div>
+    return (
+      <div className="fixed top-4 right-4 z-50 flex gap-2">
+        <div className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">EN</div>
+        <div className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700">中文</div>
+      </div>
+    )
   }
 
   return (
@@ -34,7 +37,7 @@ export default function LanguageSwitcher() {
         onClick={() => switchLang("zh")}
         className={lang === "zh" ? "bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium" : "bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium hover:bg-gray-200"}
       >
-        Chinese
+        中文
       </button>
     </div>
   )
