@@ -35,10 +35,10 @@ export default function Login() {
       })
       if (error) {
         setMessage(t("错误：" + error.message, "Error: " + error.message))
-      } else {
-        setMessage(t("登录成功！", "Login successful!"))
-        window.location.href = "/"
-      }
+     } else {
+  setMessage(t("登录成功！", "Login successful!"))
+  window.location.href = "/dashboard"
+}
     }
   }
 
