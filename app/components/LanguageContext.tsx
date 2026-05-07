@@ -1,7 +1,6 @@
-"use client"
+﻿"use client"
 
-import { createContext, useContext, useState, useEffect, Suspense } from "react"
-import { useSearchParams } from "next/navigation"
+import { createContext, useContext, useState, useEffect } from "react"
 
 type Language = "en" | "zh"
 
@@ -15,39 +14,26 @@ const LanguageContext = createContext<LanguageContextType>({
   setLang: () => {},
 })
 
-function LanguageReader({ children }: { children: React.ReactNode }) {
-  const searchParams = useSearchParams()
+export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLang] = useState<Language>("en")
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const langParam = searchParams.get("lang")
-    if (langParam === "zh" || langParam === "en") {
-      setLang(langParam)
-      localStorage.setItem("lang", langParam)
-    } else {
-      const saved = localStorage.getItem("lang") as Language
-      if (saved === "zh" || saved === "en") {
-        setLang(saved)
-      }
+    setMounted(true)
+    const saved = localStorage.getItem("lang") as Language
+    if (saved === "zh" || saved === "en") {
+      setLang(saved)
     }
-  }, [searchParams])
+  }, [])
+
+  if (!mounted) {
+    return <>{children}</>
+  }
 
   return (
     <LanguageContext.Provider value={{ lang, setLang }}>
       {children}
     </LanguageContext.Provider>
-  )
-}
-
-function LoadingFallback() {
-  return <div className="min-h-screen bg-gray-50" />
-}
-
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  return (
-    <Suspense fallback={<LoadingFallback />}>
-      <LanguageReader>{children}</LanguageReader>
-    </Suspense>
   )
 }
 

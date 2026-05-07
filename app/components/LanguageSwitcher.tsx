@@ -4,12 +4,10 @@ import { useLanguage } from "./LanguageContext"
 export default function LanguageSwitcher() {
   const { lang, setLang } = useLanguage()
 
-  const switchLang = (newLang: string) => {
-    setLang(newLang as "en" | "zh")
+  const switchLang = (newLang: "en" | "zh") => {
+    setLang(newLang)
     localStorage.setItem("lang", newLang)
-    const params = new URLSearchParams(window.location.search)
-    params.set("lang", newLang)
-    window.history.pushState({}, "", "?" + params.toString())
+    window.location.reload()
   }
 
   return (
