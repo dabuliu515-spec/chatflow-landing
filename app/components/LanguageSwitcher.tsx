@@ -7,10 +7,6 @@ export default function LanguageSwitcher() {
   const switchLang = (newLang: "en" | "zh") => {
     setLang(newLang)
     localStorage.setItem("lang", newLang)
-    const url = new URL(window.location.href)
-    url.searchParams.set("lang", newLang)
-    window.history.pushState({}, "", url.toString())
-    window.location.reload()
   }
 
   return (
