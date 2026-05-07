@@ -1,7 +1,8 @@
-import type { Metadata } from "next"
+﻿import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Suspense } from "react"
 import { LanguageProvider } from "./components/LanguageContext"
+import { AuthProvider } from "@/lib/AuthContext"
 import LanguageSwitcher from "./components/LanguageSwitcher"
 import "./globals.css"
 
@@ -31,13 +32,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-        <LanguageProvider>
-          <Suspense fallback={<LoadingSwitcher />}>
-            <LanguageSwitcher />
-          </Suspense>
-          {children}
-        </LanguageProvider>
+      <body className={geistSans.variable + " " + geistMono.variable + " h-full antialiased"}>
+        <AuthProvider>
+          <LanguageProvider>
+            <Suspense fallback={<LoadingSwitcher />}>
+              <LanguageSwitcher />
+            </Suspense>
+            {children}
+          </LanguageProvider>
+        </AuthProvider>
       </body>
     </html>
   )
